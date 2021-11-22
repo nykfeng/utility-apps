@@ -38,7 +38,7 @@ article {
   border-left: 1px solid black;
 }
 .result {
-  height: 50px;
+  height: 60px;
   border: 1px solid black;
   justify-content: flex-end;
   align-items: center;
@@ -53,7 +53,7 @@ article {
   flex: 0 1 25%;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 60px;
   border: 1px solid black;
   border-top: none;
   border-left: none;
