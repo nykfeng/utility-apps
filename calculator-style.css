@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+
+body {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 1000px;
+}
+
+h1 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+header,
+article {
+  display: flex;
+  justify-content: center;
+  flex: 0 1 100%;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 100%;
+  max-width: 500px;
+  font-size: 2rem;
+}
+
+.buttons,
+.result {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 100%;
+  border-left: 1px solid black;
+}
+.result {
+  height: 50px;
+  border: 1px solid black;
+  justify-content: flex-end;
+  align-items: center;
+
+  background: #000;
+  color: #fff;
+  padding: 0 10px;
+}
+
+.button {
+  display: flex;
+  flex: 0 1 25%;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: 1px solid black;
+  border-top: none;
+  border-left: none;
+  cursor: pointer;
+  background: -webkit-linear-gradient(top, #ffffff, rgb(223, 223, 223));
+}
+
+.zero-btn {
+  flex-grow: 1;
+}
+
+.button:hover {
+  background: -webkit-linear-gradient(bottom, #ffffff, rgb(223, 223, 223));
+}
+
+.operator {
+  background: -webkit-linear-gradient(top, #f59c48, #f98110);
+}
+
+.operator:hover {
+  background: -webkit-linear-gradient(bottom, #f59c48, #f98110);
+}
+
+.resetBtn {
+  background: -webkit-linear-gradient(top, #f78d8d, #f74747);
+}
+
+.resetBtn:hover {
+  background: -webkit-linear-gradient(bottom, #f78d8d, #f74747);
+}
