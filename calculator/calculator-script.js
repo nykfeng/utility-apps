@@ -12,19 +12,22 @@ let tempResult = "";
 
 allBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
+    // Listen for number buttons
     if (numberStr.includes(btn.textContent)) {
-      console.log(`btn textcontent ${btn.textContent}`);
       if (!tempResult.includes(".")) {
         tempResult = displayResult.textContent;
       }
       tempResult += btn.textContent;
-      console.log(`tempResult is ${tempResult}`);
       displayResult.textContent = parseFloat(tempResult);
     }
+
+    // Listen for . operator button
     if (dotOperatorStr.includes(btn.textContent)) {
       if (tempResult.includes(".") && btn.textContent === ".") return;
       tempResult += btn.textContent;
     }
+
+    // Listen for +/- opreator button
     if (plustMinusOperatorStr === btn.textContent) {
       tempResult = displayResult.textContent;
 
@@ -36,11 +39,8 @@ allBtn.forEach((btn) => {
         displayResult.textContent = tempResult;
       }
     }
-  });
-});
 
-allBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
+    // Listen for different operator buttons
     if (operatorStr.includes(btn.textContent)) {
       clearMemory();
       operation = btn.textContent;
@@ -48,11 +48,8 @@ allBtn.forEach((btn) => {
 
       displayResult.textContent = 0;
     }
-  });
-});
 
-allBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
+    // Listen for = operator button
     if (btn.textContent === "=") {
       clearMemory();
       operationVar2 = displayResult.textContent;
@@ -64,11 +61,8 @@ allBtn.forEach((btn) => {
       operationVar1 = displayResult.textContent;
       operationVar2 = "";
     }
-  });
-});
 
-allBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
+    // Listen for CE clear button
     if (btn.textContent === "CE") {
       clearMemory();
       displayResult.textContent = 0;
@@ -77,7 +71,6 @@ allBtn.forEach((btn) => {
 });
 
 const calculateOperation = function (var1, optn, var2) {
-  console.log("in switch " + optn);
   switch (optn) {
     case "+":
       return parseFloat(var1) + parseFloat(var2);
