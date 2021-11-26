@@ -2,12 +2,11 @@ const allBtn = document.querySelectorAll(".button");
 const displayResult = document.querySelector(".result");
 
 let prevResult;
-const numberStr = "1234567890.";
+const numberStr = "1234567890";
 const operatorStr = "+-%÷×";
 const dotOperatorStr = ".";
 const plustMinusOperatorStr = "+/-";
-let operationVar1, operationVar2;
-let operation;
+let operationVar1, operationVar2, operation;
 let tempResult = "";
 
 allBtn.forEach((btn) => {
@@ -16,13 +15,17 @@ allBtn.forEach((btn) => {
     if (numberStr.includes(btn.textContent)) {
       if (!tempResult.includes(".")) {
         tempResult = displayResult.textContent;
+        tempResult += btn.textContent;
+        displayResult.textContent = parseFloat(tempResult);
+      } else {
+        tempResult += btn.textContent;
+        displayResult.textContent = tempResult;
       }
-      tempResult += btn.textContent;
-      displayResult.textContent = parseFloat(tempResult);
     }
 
     // Listen for . operator button
     if (dotOperatorStr.includes(btn.textContent)) {
+      // Can not contain more than 1 dot
       if (tempResult.includes(".") && btn.textContent === ".") return;
       tempResult += btn.textContent;
     }
@@ -74,19 +77,18 @@ const calculateOperation = function (var1, optn, var2) {
   switch (optn) {
     case "+":
       return parseFloat(var1) + parseFloat(var2);
-      break;
+
     case "-":
       return parseFloat(var1) - parseFloat(var2);
-      break;
+
     case "÷":
       return parseFloat(var1) / parseFloat(var2);
-      break;
+
     case "×":
       return parseFloat(var1) * parseFloat(var2);
-      break;
+
     case "%":
       return parseFloat(var1) % parseFloat(var2);
-      break;
   }
 };
 
