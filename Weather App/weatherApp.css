@@ -1,16 +1,40 @@
 .weather-container {
+  margin: 5% auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   width: 250px;
   height: 450px;
   border-radius: 10px;
+  border: 1px solid #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: gray;
   color: #fff;
+  justify-content: space-between;
+  box-sizing: border-box;
+  box-shadow: 3px 3px 10px #acacac;
+}
+
+.weather-header {
+  padding: 5px;
+  display: flex;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.date-today {
+  flex-grow: 1;
+  margin-left: 36px;
+}
+
+.option-btn {
+  font-size: 36px;
+  align-self: flex-start;
 }
 
 .weather-condition {
-  font-size: 32px;
+  font-size: 36px;
   padding: 5px;
 }
 
@@ -21,5 +45,54 @@
 
 .weather-temperature {
   font-size: 66px;
-  padding: 5px;
+}
+
+.weather-description {
+  font-size: 14px;
+}
+
+.weather-bottom-stats {
+  width: 100%;
+  /* justify-self: end; */
+}
+
+.weather-temperature-humidity,
+.weather-temperature-pressure,
+.weather-temperature-sunrise,
+.weather-temperature-sunset {
+  box-sizing: border-box;
+  padding: 8px 0;
+  width: 100%;
+  border-top: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.weather-temperature-sunset {
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.background-sunny {
+  color: #1d1d1d;
+  background-image: url(images/sunny.jpg);
+}
+
+.background-rainy {
+  background-image: url(images/rainy.jpg);
+}
+
+.weather-bottom-opacity {
+  opacity: 0.7;
+}
+
+.background-clear {
+  color: #1d1d1d;
+  background-image: url(images/clear-sky.jpg);
+}
+
+.background-cloudy {
+  background-image: url(images/cloudy.jpg);
 }

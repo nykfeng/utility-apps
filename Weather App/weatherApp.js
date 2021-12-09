@@ -1,12 +1,24 @@
 const apiKey = "31076bff1501d994442202d18c38e1f4";
 
-let url =
-  "api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}";
+// Getting all the output elements
+const weatherEl = document.querySelector(".weather-container");
+const dateTodayEl = document.querySelector(".date-today");
+const weatherConditionEl = document.querySelector(".weather-condition");
+const weatherLocationEl = document.querySelector(".weather-location");
+const weatherTemperatureEl = document.querySelector(".weather-temperature");
+const weatherDescriptionEl = document.querySelector(".weather-description");
 
-let london =
-  "https://api.openweathermap.org/data/2.5/weather?q=London&appid=31076bff1501d994442202d18c38e1f4";
-
-// let apiTemp = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+const temperatureFeelsLikeEl = document.querySelector(
+  ".weather-temperature-feels-like"
+);
+const temperatureHumidityEl = document.querySelector(
+  ".weather-temperature-humidity"
+);
+const temperaturePressureEl = document.querySelector(
+  ".weather-temperature-pressure"
+);
+const sunriseEl = document.querySelector(".weather-temperature-sunrise");
+const sunsetEl = document.querySelector(".weather-temperature-sunset");
 
 const currentLocation = { latitude: 0, longitude: 0 };
 
@@ -45,41 +57,31 @@ const fetchWeather = async function (weatherUrl) {
 const renderWeatherDataHtml = async function (weatherUrl) {
   const data = await fetchWeather(weatherUrl);
   console.log(data);
-  const weatherConditionEl = document.querySelector(".weather-condition");
-  const weatherLocationEl = document.querySelector(".weather-location");
-  const weatherTemperatureEl = document.querySelector(".weather-temperature");
-  const weatherDescriptionEl = document.querySelector(".weather-description");
 
-  const temperatureFeelsLikeEl = document.querySelector(
-    ".weather-temperature-feels-like"
-  );
-  const temperatureHumidityEl = document.querySelector(
-    ".weather-temperature-humidity"
-  );
-  const temperaturePressureEl = document.querySelector(
-    ".weather-temperature-pressure"
-  );
-  const sunriseEl = document.querySelector(".weather-temperature-sunrise");
-  const sunsetEl = document.querySelector(".weather-temperature-sunset");
+  // Display all the data gotten from the weather API
+  dateTodayEl.textContent = getCurrentDate();
 
   weatherConditionEl.textContent = data.weather[0].main;
-
-  weatherLocationEl.textContent = data.name;
+  console.log(data.weather[0].main);
+  backgroundWeatherImage(data.weather[0].main);
 
   weatherTemperatureEl.textContent =
-    kelvinToFahrenheit(parseFloat(data.main.temp)) + " F";
+    kelvinToFahrenheit(parseFloat(data.main.temp)) + "°F";
 
   weatherDescriptionEl.textContent = data.weather[0].description;
 
-  temperatureFeelsLikeEl.textContent = data.main.feels_like;
+  temperatureFeelsLikeEl.textContent =
+    "feels like " + kelvinToFahrenheit(parseFloat(data.main.feels_like)) + "°F";
 
-  temperatureHumidityEl.textContent = data.main.humidity;
+  temperatureHumidityEl.textContent = "💧Humidity: " + data.main.humidity;
 
-  temperaturePressureEl.textContent = data.main.pressure;
+  temperaturePressureEl.textContent = "🌌Pressure: " + data.main.pressure;
 
-  sunriseEl.textContent = formatTime(convertSecondsToDate(data.sys.sunrise));
+  sunriseEl.textContent =
+    "🌞Sunrise: " + formatTime(convertSecondsToDate(data.sys.sunrise));
 
-  sunsetEl.textContent = formatTime(convertSecondsToDate(data.sys.sunset));
+  sunsetEl.textContent =
+    "☀Sunset: " + formatTime(convertSecondsToDate(data.sys.sunset));
 };
 
 const kelvinToFahrenheit = function (kelvin) {
@@ -95,4 +97,27 @@ const formatTime = function (date) {
   const min = date.getMinutes().toString().padStart(2, "0");
 
   return hr + ":" + min;
+};
+
+const getCurrentDate = function () {
+  const date = new Date();
+  return `${(date.getMonth() + 1).toString().padStart(2, "0")}-${date
+    .getDate()
+    .toString()
+    .padStart(2, "0")}-${date.getFullYear()}`;
+};
+
+const backgroundWeatherImage = function (weather) {
+  console.log(`what s the weather ${weather}`);
+
+  if (weather.toLowerCase().includes("rain")) {
+    weatherEl.classList.add("background-rainy");
+    weatherEl.classList.add("weather-bottom-opacity");
+  } else if (weather.toLowerCase().includes("cloud")) {
+    weatherEl.classList.add("background-cloudy");
+  } else if (weather.toLowerCase().includes("sun")) {
+    weatherEl.classList.add("background-sunny");
+  } else if (weather.toLowerCase().includes("clear")) {
+    weatherEl.classList.add("background-clear");
+  }
 };
