@@ -1,8 +1,10 @@
 const apiKey = "31076bff1501d994442202d18c38e1f4";
 
 // Getting all the output elements
+const bodyEL = document.querySelector("body");
 const weatherEl = document.querySelector(".weather-container");
 const dateTodayEl = document.querySelector(".date-today");
+const optionBtnEl = document.querySelector(".option-btn");
 const weatherConditionEl = document.querySelector(".weather-condition");
 const weatherLocationEl = document.querySelector(".weather-location");
 const weatherTemperatureEl = document.querySelector(".weather-temperature");
@@ -62,9 +64,9 @@ const renderWeatherDataHtml = async function (weatherUrl) {
   dateTodayEl.textContent = getCurrentDate();
 
   weatherConditionEl.textContent = data.weather[0].main;
-  console.log(data.weather[0].main);
   backgroundWeatherImage(data.weather[0].main);
 
+  weatherLocationEl.textContent = data.name;
   weatherTemperatureEl.textContent =
     kelvinToFahrenheit(parseFloat(data.main.temp)) + "°F";
 
@@ -78,10 +80,16 @@ const renderWeatherDataHtml = async function (weatherUrl) {
   temperaturePressureEl.textContent = "🌌Pressure: " + data.main.pressure;
 
   sunriseEl.textContent =
-    "🌞Sunrise: " + formatTime(convertSecondsToDate(data.sys.sunrise));
+    "🌞Sunrise: " +
+    formatTime(
+      convertSecondsToDate(data.sys.sunrise * 1000 - data.timezone * 1000)
+    );
 
   sunsetEl.textContent =
-    "☀Sunset: " + formatTime(convertSecondsToDate(data.sys.sunset));
+    "☀Sunset: " +
+    formatTime(
+      convertSecondsToDate(data.sys.sunset * 1000 - data.timezone * 1000)
+    );
 };
 
 const kelvinToFahrenheit = function (kelvin) {
@@ -89,7 +97,7 @@ const kelvinToFahrenheit = function (kelvin) {
 };
 
 const convertSecondsToDate = function (seconds) {
-  return new Date(seconds * 1000); // The api returned date is in seconds, need milli sectonds
+  return new Date(seconds); // The api returned date is in seconds, need milli sectonds
 };
 
 const formatTime = function (date) {
@@ -110,14 +118,99 @@ const getCurrentDate = function () {
 const backgroundWeatherImage = function (weather) {
   console.log(`what s the weather ${weather}`);
 
-  if (weather.toLowerCase().includes("rain")) {
+  if (
+    weather.toLowerCase().includes("rain") ||
+    weather.toLowerCase().includes("drizzle")
+  ) {
+    bodyEL.classList.add("body-background-rainy");
     weatherEl.classList.add("background-rainy");
     weatherEl.classList.add("weather-bottom-opacity");
   } else if (weather.toLowerCase().includes("cloud")) {
+    bodyEL.classList.add("body-background-cloudy");
     weatherEl.classList.add("background-cloudy");
   } else if (weather.toLowerCase().includes("sun")) {
+    bodyEL.classList.add("body-background-sunny");
     weatherEl.classList.add("background-sunny");
   } else if (weather.toLowerCase().includes("clear")) {
+    bodyEL.classList.add("body-background-clear");
     weatherEl.classList.add("background-clear");
+  } else if (weather.toLowerCase().includes("snow")) {
+    bodyEL.classList.add("body-background-snow");
+    weatherEl.classList.add("background-snow");
+  } else if (
+    weather.toLowerCase().includes("haze") ||
+    weather.toLowerCase().includes("fog")
+  ) {
+    bodyEL.classList.add("body-background-haze-foggy");
+    weatherEl.classList.add("background-haze-foggy");
   }
+};
+
+optionBtnEl.addEventListener("click", function () {
+  renderAdditionDialogBox();
+});
+
+const renderAdditionDialogBox = function () {
+  addCityModal();
+  userActions();
+};
+
+const addCityModal = function () {
+  const html = `
+  <div class="confirm_dialog-background">
+      <div class="confirm_dialog-box">
+        <div class="confirm_dialog-title">
+          <span>Check Weather</span>
+        </div>
+        <div class="confirm_dialog-message">
+          <label>Enter a city name to check the weather.</label>
+          <input class="city-input" type="text">
+        </div>
+        <div class="confirm_dialog_btn-box">
+          <button class="confirm_button--submit">Submit</button>
+          <button class="confirm_button--cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+    `;
+  document.querySelector("body").insertAdjacentHTML("beforeend", html);
+};
+
+const userActions = function () {
+  document.querySelector("body").addEventListener("click", function (e) {
+    if (
+      e.target.classList.contains("confirm_dialog-background") ||
+      e.target.classList.contains("confirm_button--cancel")
+    ) {
+      if (document.querySelector(".confirm_dialog-background"))
+        document.querySelector(".confirm_dialog-background").remove();
+    }
+  });
+  const userCityInputEl = document.querySelector(".city-input");
+  userCityInputEl.focus();
+
+  document
+    .querySelector(".confirm_button--submit")
+    .addEventListener("click", function () {
+      renderNewCityWeather(userCityInputEl);
+    });
+
+  userCityInputEl.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") renderNewCityWeather(userCityInputEl);
+  });
+};
+
+const renderNewCityWeather = function (userCityInputEl) {
+  const userCityInput = userCityInputEl.value;
+  if (userCityInput != "") {
+    const weatherAPIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${userCityInput}&appid=${apiKey}`;
+    clearBackgroundClass();
+    renderWeatherDataHtml(weatherAPIUrl);
+    document.querySelector(".confirm_dialog-background").remove();
+  }
+};
+
+const clearBackgroundClass = function () {
+  weatherEl.className = "weather-container";
+  bodyEL.removeAttribute("class");
 };

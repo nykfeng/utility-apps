@@ -30,7 +30,14 @@
 
 .option-btn {
   font-size: 36px;
-  align-self: flex-start;
+}
+
+.option-btn:hover {
+  cursor: pointer;
+}
+
+.option-btn:active {
+  transform: scale(0.9);
 }
 
 .weather-condition {
@@ -81,7 +88,7 @@
 }
 
 .background-rainy {
-  background-image: url(images/rainy.jpg);
+  background-image: url(images/rainy.png);
 }
 
 .weather-bottom-opacity {
@@ -95,4 +102,36 @@
 
 .background-cloudy {
   background-image: url(images/cloudy.jpg);
+}
+
+.background-snow {
+  background-image: url(images/snow.png);
+}
+
+.background-haze-foggy {
+  background-image: url(images/foggy.png);
+}
+
+.body-background-cloudy {
+  background: linear-gradient(to right, #616060, #cccbcb);
+}
+
+.body-background-sunny {
+  background: linear-gradient(to right, #86bcdb, #35aee6);
+}
+
+.body-background-rainy {
+  background: linear-gradient(to right, #5e6b6e, #454546);
+}
+
+.body-background-clear {
+  background: linear-gradient(to right, #b9dcec, #77c0e2);
+}
+
+.body-background-snow {
+  background: linear-gradient(to right, #fdfdfd, #cccbcb);
+}
+
+.body-background-haze-foggy {
+  background: linear-gradient(to right, #8d8d8d, #cccbcb);
 }
