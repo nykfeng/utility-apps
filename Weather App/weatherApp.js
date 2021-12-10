@@ -79,16 +79,23 @@ const renderWeatherDataHtml = async function (weatherUrl) {
 
   temperaturePressureEl.textContent = "🌌Pressure: " + data.main.pressure;
 
+  console.log("Sunrise millie " + data.sys.sunrise);
   sunriseEl.textContent =
     "🌞Sunrise: " +
     formatTime(
-      convertSecondsToDate(data.sys.sunrise * 1000 - data.timezone * 1000)
-    );
+      convertSecondsToDate(
+        (data.sys.sunrise + (data.timezone + userTimezoneOffset())) * 1000
+      )
+    ); // sunrise data is in seconds, so it needs to multiply by 1000
+  // data.timezone is offset from UTC, need to get user currentTimezon offet
+  // So when users search for sunrise sunset of different timezones, it will display properly
 
   sunsetEl.textContent =
     "☀Sunset: " +
     formatTime(
-      convertSecondsToDate(data.sys.sunset * 1000 - data.timezone * 1000)
+      convertSecondsToDate(
+        (data.sys.sunset + (data.timezone + userTimezoneOffset())) * 1000
+      )
     );
 };
 
@@ -98,6 +105,11 @@ const kelvinToFahrenheit = function (kelvin) {
 
 const convertSecondsToDate = function (seconds) {
   return new Date(seconds); // The api returned date is in seconds, need milli sectonds
+};
+
+const userTimezoneOffset = function () {
+  const date = new Date();
+  return date.getTimezoneOffset() * 60;
 };
 
 const formatTime = function (date) {
