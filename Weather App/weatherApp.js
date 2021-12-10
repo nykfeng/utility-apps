@@ -43,9 +43,6 @@ if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(locationAccessed, locationDenied);
 }
 
-// const currentWeather = fetch(weatherUrl);
-// currentWeather.then((res) => res.json()).then((data) => console.log(data));
-
 const fetchWeather = async function (weatherUrl) {
   try {
     const response = await fetch(weatherUrl);
@@ -58,7 +55,6 @@ const fetchWeather = async function (weatherUrl) {
 
 const renderWeatherDataHtml = async function (weatherUrl) {
   const data = await fetchWeather(weatherUrl);
-  console.log(data);
 
   // Display all the data gotten from the weather API
   dateTodayEl.textContent = getCurrentDate();
@@ -79,14 +75,13 @@ const renderWeatherDataHtml = async function (weatherUrl) {
 
   temperaturePressureEl.textContent = "🌌Pressure: " + data.main.pressure;
 
-  console.log("Sunrise millie " + data.sys.sunrise);
   sunriseEl.textContent =
     "🌞Sunrise: " +
     formatTime(
       convertSecondsToDate(
         (data.sys.sunrise + (data.timezone + userTimezoneOffset())) * 1000
       )
-    ); // sunrise data is in seconds, so it needs to multiply by 1000
+    ); // sunrise data is in seconds, so it needs to multiply by 1000 to get milliseconds
   // data.timezone is offset from UTC, need to get user currentTimezon offet
   // So when users search for sunrise sunset of different timezones, it will display properly
 
@@ -109,7 +104,7 @@ const convertSecondsToDate = function (seconds) {
 
 const userTimezoneOffset = function () {
   const date = new Date();
-  return date.getTimezoneOffset() * 60;
+  return date.getTimezoneOffset() * 60; // getTimezoneOffset returns minutes, i need seconds (x 60)
 };
 
 const formatTime = function (date) {
@@ -128,8 +123,6 @@ const getCurrentDate = function () {
 };
 
 const backgroundWeatherImage = function (weather) {
-  console.log(`what s the weather ${weather}`);
-
   if (
     weather.toLowerCase().includes("rain") ||
     weather.toLowerCase().includes("drizzle")
