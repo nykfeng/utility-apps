@@ -8,12 +8,17 @@ const dotOperatorStr = ".";
 const plustMinusOperatorStr = "+/-";
 let operationVar1, operationVar2, operation;
 let tempResult = "";
+let operationConfirmed = false;
 
 allBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     // Listen for number buttons
     if (numberStr.includes(btn.textContent)) {
+      if (operationConfirmed) {
+        displayResult.textContent = 0;
+      }
       if (!tempResult.includes(".")) {
+        operationConfirmed = false;
         tempResult = displayResult.textContent;
         tempResult += btn.textContent;
         displayResult.textContent = parseFloat(tempResult);
@@ -26,8 +31,10 @@ allBtn.forEach((btn) => {
     // Listen for . operator button
     if (dotOperatorStr.includes(btn.textContent)) {
       // Can not contain more than 1 dot
-      if (tempResult.includes(".") && btn.textContent === ".") return;
+      if (tempResult.includes(".")) return;
+      if (tempResult === "") tempResult = "0";
       tempResult += btn.textContent;
+      tempResult = formatFloatingNumberDisplay(tempResult);
     }
 
     // Listen for +/- opreator button
@@ -43,17 +50,19 @@ allBtn.forEach((btn) => {
       }
     }
 
-    // Listen for different operator buttons
+    // Listen for different operator buttons + - * / %
     if (operatorStr.includes(btn.textContent)) {
       clearMemory();
       operation = btn.textContent;
       operationVar1 = displayResult.textContent;
 
-      displayResult.textContent = 0;
+      // displayResult.textContent = 0;
+      operationConfirmed = true;
     }
 
     // Listen for = operator button
     if (btn.textContent === "=") {
+      operationConfirmed = true;
       clearMemory();
       operationVar2 = displayResult.textContent;
       displayResult.textContent = calculateOperation(
@@ -94,4 +103,13 @@ const calculateOperation = function (var1, optn, var2) {
 
 const clearMemory = function () {
   tempResult = "";
+};
+
+const formatFloatingNumberDisplay = function (numberStr) {
+  if (numberStr.includes(".")) {
+    numberStr =
+      parseInt(numberStr.substring(0, numberStr.indexOf("."))) +
+      numberStr.substring(numberStr.indexOf("."), numberStr.length);
+  }
+  return numberStr;
 };
